@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultithreadingServices", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultithreadingTask3", "MultithreadingTask3\MultithreadingTask3.csproj", "{34B9B479-EF25-47B2-A312-CBE43543B312}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultithreadingData", "MultithreadingData\MultithreadingData.csproj", "{04E2D493-04B1-459F-8D25-D825748F8A3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{34B9B479-EF25-47B2-A312-CBE43543B312}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34B9B479-EF25-47B2-A312-CBE43543B312}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34B9B479-EF25-47B2-A312-CBE43543B312}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04E2D493-04B1-459F-8D25-D825748F8A3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04E2D493-04B1-459F-8D25-D825748F8A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04E2D493-04B1-459F-8D25-D825748F8A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04E2D493-04B1-459F-8D25-D825748F8A3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

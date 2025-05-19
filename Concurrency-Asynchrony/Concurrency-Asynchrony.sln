@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35913.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcurrencyAsynchrony", "Programm\ConcurrencyAsynchrony.csproj", "{4AEEADAD-C3FE-4564-8606-774CF1D60D59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{FDC169D0-0DFA-4B73-93C1-3E5788235376}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AEEADAD-C3FE-4564-8606-774CF1D60D59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AEEADAD-C3FE-4564-8606-774CF1D60D59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AEEADAD-C3FE-4564-8606-774CF1D60D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AEEADAD-C3FE-4564-8606-774CF1D60D59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDC169D0-0DFA-4B73-93C1-3E5788235376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDC169D0-0DFA-4B73-93C1-3E5788235376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDC169D0-0DFA-4B73-93C1-3E5788235376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDC169D0-0DFA-4B73-93C1-3E5788235376}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ECCA0D86-12F2-4960-A9E2-8DCF9604AD7B}
+	EndGlobalSection
+EndGlobal
