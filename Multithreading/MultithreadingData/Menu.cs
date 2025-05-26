@@ -1,10 +1,8 @@
-﻿using MultithreadingModels;
+﻿using MultithreadingData;
+using MultithreadingModels;
 using MultithreadingServices;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MultithreadingData
 {
@@ -15,115 +13,56 @@ namespace MultithreadingData
             new MenuItem
             {
                 Key = "1",
-                Description = "Создать 10 телефонов и вывести",
+                Description = "Сгенерировать 20 объектов и сериализовать их в два файла (многопоточно)",
                 Action = () =>
                 {
-                    DataStore.phones = DataGenerator.GeneratePhones(10);
-                    DataStore.phones.ForEach(p => p.Print());
+                    DataStore.phones = DataGenerator.GeneratePhones(20);
+
+                    var firstHalf = DataStore.phones.GetRange(0, 10);
+                    var secondHalf = DataStore.phones.GetRange(10, 10);
+
+                    var t1 = Task.Run(() => XmlSerializerService.SaveToXml(firstHalf, Constants.phonesFile1));
+                    var t2 = Task.Run(() => XmlSerializerService.SaveToXml(secondHalf, Constants.phonesFile2));
+                    Task.WaitAll(t1, t2);
+
+                    Console.WriteLine("20 объектов сгенерированы и сериализованы в два файла параллельно.");
                 }
             },
             new MenuItem
             {
                 Key = "2",
-                Description = "Создать 10 производителей и вывести",
+                Description = "Слить два файла в третий, чередуя записи (многопоточно)",
                 Action = () =>
                 {
-                    DataStore.manufacturers = DataGenerator.GenerateManufacturers(10);
-                    DataStore.manufacturers.ForEach(m => m.Print());
+                    ParallelMergerService.MergeAlternating<Phone>(Constants.phonesFile1, Constants.phonesFile2, Constants.phonesMergedFile);
+                    Console.WriteLine("Файлы объединены в третий файл с чередованием записей.");
                 }
             },
             new MenuItem
             {
                 Key = "3",
-                Description = "Сериализовать телефоны",
+                Description = "Однопоточное чтение объединённого файла с выводом времени",
                 Action = () =>
                 {
-                    XmlSerializerService.SaveToXml(DataStore.phones, Constants.phonesFile);
-                    Console.WriteLine("Телефоны сериализованы.");
+                    FileReaderService.ReadSingleThreaded<Phone>(Constants.phonesMergedFile);
                 }
             },
             new MenuItem
             {
                 Key = "4",
-                Description = "Сериализовать производителей",
+                Description = "Двухпоточное чтение объединённого файла с выводом времени",
                 Action = () =>
                 {
-                    XmlSerializerService.SaveToXml(DataStore.manufacturers, Constants.manufacturersFile);
-                    Console.WriteLine("Производители сериализованы.");
+                    FileReaderService.ReadTwoThreaded<Phone>(Constants.phonesMergedFile);
                 }
             },
             new MenuItem
             {
                 Key = "5",
-                Description = "Показать телефоны из XML",
+                Description = "Десять потоков читают файл с ограничением до 5 одновременных потоков (семафор)",
                 Action = () =>
                 {
-                    var loadedPhones = XmlSerializerService.LoadFromXml<Phone>(Constants.phonesFile);
-                    if (loadedPhones.Count == 0) Console.WriteLine("Файл пуст.");
-                    else loadedPhones.ForEach(p => p.Print());
-                }
-            },
-            new MenuItem
-            {
-                Key = "6",
-                Description = "Показать производителей из XML",
-                Action = () =>
-                {
-                    var loadedManufacturers = XmlSerializerService.LoadFromXml<Manufacturer>(Constants.manufacturersFile);
-                    if (loadedManufacturers.Count == 0) Console.WriteLine("Файл пуст.");
-                    else loadedManufacturers.ForEach(m => m.Print());
-                }
-            },
-            new MenuItem
-            {
-                Key = "7",
-                Description = "Показать все Model через XDocument",
-                Action = () => XmlReaderService.PrintModelsWithXDocument(Constants.phonesFile)
-            },
-            new MenuItem
-            {
-                Key = "8",
-                Description = "Показать все Model через XmlDocument",
-                Action = () => XmlReaderService.PrintModelsWithXmlDocument(Constants.phonesFile)
-            },
-            new MenuItem
-            {
-                Key = "9",
-                Description = "Изменить значение элемента через XDocument",
-                Action = () =>
-                {
-                    Console.Write("Введите имя элемента (например, Model): ");
-                    string elemNameX = Console.ReadLine();
-                    Console.Write("Введите индекс (начиная с 0): ");
-                    if (!int.TryParse(Console.ReadLine(), out int indexX))
-                    {
-                        Console.WriteLine("Некорректный индекс.");
-                        return;
-                    }
-                    Console.Write("Введите новое значение: ");
-                    string newValX = Console.ReadLine();
-
-                    XmlPatcher.UpdateElementValueXDocument(Constants.phonesFile, elemNameX, indexX, newValX);
-                }
-            },
-            new MenuItem
-            {
-                Key = "10",
-                Description = "Изменить значение элемента через XmlDocument",
-                Action = () =>
-                {
-                    Console.Write("Введите имя элемента (например, Model): ");
-                    string elemNameXml = Console.ReadLine();
-                    Console.Write("Введите индекс (начиная с 0): ");
-                    if (!int.TryParse(Console.ReadLine(), out int indexXml))
-                    {
-                        Console.WriteLine("Некорректный индекс.");
-                        return;
-                    }
-                    Console.Write("Введите новое значение: ");
-                    string newValXml = Console.ReadLine();
-
-                    XmlPatcher.UpdateElementValueXmlDocument(Constants.phonesFile, elemNameXml, indexXml, newValXml);
+                    FileReaderService.ReadWithSemaphore<Phone>(Constants.phonesMergedFile);
                 }
             },
             new MenuItem
