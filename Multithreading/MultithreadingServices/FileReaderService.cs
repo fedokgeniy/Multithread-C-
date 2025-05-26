@@ -17,12 +17,12 @@ namespace MultithreadingServices
             var data = XmlSerializerService.LoadFromXml<T>(path);
             stopwatch.Stop();
 
-            Console.WriteLine("=== [Single-threaded Reading] ===");
+            Console.WriteLine("=== [Однопоточное чтение] ===");
             foreach (var item in data)
             {
                 Console.WriteLine(item);
             }
-            Console.WriteLine($"Time elapsed: {stopwatch.ElapsedMilliseconds} ms\n");
+            Console.WriteLine($"Время затрачено: {stopwatch.ElapsedMilliseconds} ms\n");
         }
 
         public static void ReadTwoThreaded<T>(string path)
@@ -38,7 +38,7 @@ namespace MultithreadingServices
             {
                 foreach (var item in part1)
                 {
-                    Console.WriteLine($"[T1] {item}");
+                    Console.WriteLine($"[Поток #1] {item}");
                 }
             });
 
@@ -46,15 +46,15 @@ namespace MultithreadingServices
             {
                 foreach (var item in part2)
                 {
-                    Console.WriteLine($"[T2] {item}");
+                    Console.WriteLine($"[Поток #2] {item}");
                 }
             });
 
             Task.WaitAll(task1, task2);
             stopwatch.Stop();
 
-            Console.WriteLine($"=== [Two-threaded Reading] ===");
-            Console.WriteLine($"Time elapsed: {stopwatch.ElapsedMilliseconds} ms\n");
+            Console.WriteLine($"=== [Двупоточное чтение] ===");
+            Console.WriteLine($"Времени затрачено: {stopwatch.ElapsedMilliseconds} ms\n");
         }
 
         public static void ReadWithSemaphore<T>(string path)
@@ -78,13 +78,13 @@ namespace MultithreadingServices
                     try
                     {
                         var sw = Stopwatch.StartNew();
-                        Console.WriteLine($"[T{threadId}] started");
+                        Console.WriteLine($"[Поток #{threadId}] стартовал");
                         foreach (var item in data)
                         {
-                            Console.WriteLine($"[T{threadId}] {item}");
+                            Console.WriteLine($"[Поток #{threadId}] {item}");
                         }
                         sw.Stop();
-                        Console.WriteLine($"[T{threadId}] finished in {sw.ElapsedMilliseconds} ms");
+                        Console.WriteLine($"[Поток #{threadId}] отработал за {sw.ElapsedMilliseconds} ms");
                     }
                     finally
                     {
@@ -96,8 +96,8 @@ namespace MultithreadingServices
             Task.WaitAll(tasks.ToArray());
             stopwatch.Stop();
 
-            Console.WriteLine("=== [Semaphore-limited Reading] ===");
-            Console.WriteLine($"Total elapsed: {stopwatch.ElapsedMilliseconds} ms\n");
+            Console.WriteLine("=== [Десятипоточное чтение с семафором] ===");
+            Console.WriteLine($"Времени затрачено: {stopwatch.ElapsedMilliseconds} ms\n");
         }
     }
 }
