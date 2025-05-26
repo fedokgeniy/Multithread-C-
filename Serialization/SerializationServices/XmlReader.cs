@@ -10,6 +10,8 @@ namespace SerializationServices
 {
     public static class XmlReaderService
     {
+        private const string modelName = "Phone";
+        private const string model = "Model";
         public static void PrintModelsWithXDocument(string path)
         {
             if (!File.Exists(path))
@@ -19,11 +21,11 @@ namespace SerializationServices
             }
 
             var doc = XDocument.Load(path);
-            var models = doc.Descendants("Phone")
-                            .Select(e => e.Element("Model")?.Value)
+            var models = doc.Descendants(modelName)
+                            .Select(e => e.Element(model)?.Value)
                             .Where(v => !string.IsNullOrWhiteSpace(v));
 
-            Console.WriteLine("Model values (via XDocument):");
+            Console.WriteLine("Значения моделей (через XDocument):");
             foreach (var model in models)
             {
                 Console.WriteLine(model);
@@ -41,8 +43,8 @@ namespace SerializationServices
             var doc = new XmlDocument();
             doc.Load(path);
 
-            var modelNodes = doc.GetElementsByTagName("Model");
-            Console.WriteLine("Model values (via XmlDocument):");
+            var modelNodes = doc.GetElementsByTagName("model");
+            Console.WriteLine("Значения моделей (через XmlDocument):");
             foreach (XmlNode node in modelNodes)
             {
                 if (node != null && !string.IsNullOrWhiteSpace(node.InnerText))
