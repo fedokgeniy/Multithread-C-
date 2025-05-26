@@ -15,7 +15,7 @@ namespace SerializationServices
         {
             if (!File.Exists(path))
             {
-                Console.WriteLine("Файл не найден.");
+                Console.WriteLine("File is not found.");
                 return;
             }
 
@@ -24,21 +24,21 @@ namespace SerializationServices
 
             if (index < 0 || index >= elements.Count)
             {
-                Console.WriteLine("Неверный индекс.");
+                Console.WriteLine("Wrong index.");
                 return;
             }
 
             elements[index].Value = newValue;
             doc.Save(path);
 
-            Console.WriteLine($"{elementName} #{index} успешно обновлён на \"{newValue}\" (XDocument)");
+            Console.WriteLine($"{elementName} #{index} succesfully updated to \"{newValue}\" (XDocument)");
         }
 
         public static void UpdateElementValueXmlDocument(string path, string elementName, int index, string newValue)
         {
             if (!File.Exists(path))
             {
-                Console.WriteLine("Файл не найден.");
+                Console.WriteLine("File is not found.");
                 return;
             }
 
@@ -48,14 +48,14 @@ namespace SerializationServices
 
             if (index < 0 || index >= elements.Count)
             {
-                Console.WriteLine("Неверный индекс.");
+                Console.WriteLine("Wrong index.");
                 return;
             }
 
             elements[index].InnerText = newValue;
             doc.Save(path);
 
-            Console.WriteLine($"{elementName} #{index} успешно обновлён на \"{newValue}\" (XmlDocument)");
+            Console.WriteLine($"{elementName} #{index} succesfully updated to \"{newValue}\" (XmlDocument)");
         }
     }
 }

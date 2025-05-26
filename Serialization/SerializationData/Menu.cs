@@ -15,7 +15,7 @@ namespace SerializationData
             new MenuItem
             {
                 Key = "1",
-                Description = "Создать 10 телефонов и вывести",
+                Description = "Create 10 phones and display them",
                 Action = () =>
                 {
                     DataStore.phones = DataGenerator.GeneratePhones(10);
@@ -25,7 +25,7 @@ namespace SerializationData
             new MenuItem
             {
                 Key = "2",
-                Description = "Создать 10 производителей и вывести",
+                Description = "Create 10 manufacturers and display them",
                 Action = () =>
                 {
                     DataStore.manufacturers = DataGenerator.GenerateManufacturers(10);
@@ -35,72 +35,72 @@ namespace SerializationData
             new MenuItem
             {
                 Key = "3",
-                Description = "Сериализовать телефоны",
+                Description = "Serialize phones",
                 Action = () =>
                 {
                     XmlSerializerService.SaveToXml(DataStore.phones, Constants.phonesFile);
-                    Console.WriteLine("Телефоны сериализованы.");
+                    Console.WriteLine("Phones have been serialized.");
                 }
             },
             new MenuItem
             {
                 Key = "4",
-                Description = "Сериализовать производителей",
+                Description = "Serialize manufacturers",
                 Action = () =>
                 {
                     XmlSerializerService.SaveToXml(DataStore.manufacturers, Constants.manufacturersFile);
-                    Console.WriteLine("Производители сериализованы.");
+                    Console.WriteLine("Manufacturers have been serialized.");
                 }
             },
             new MenuItem
             {
                 Key = "5",
-                Description = "Показать телефоны из XML",
+                Description = "Show phones from XML",
                 Action = () =>
                 {
                     var loadedPhones = XmlSerializerService.LoadFromXml<Phone>(Constants.phonesFile);
-                    if (loadedPhones.Count == 0) Console.WriteLine("Файл пуст.");
+                    if (loadedPhones.Count == 0) Console.WriteLine("File is empty.");
                     else loadedPhones.ForEach(p => p.Print());
                 }
             },
             new MenuItem
             {
                 Key = "6",
-                Description = "Показать производителей из XML",
+                Description = "Show manufacturers from XML",
                 Action = () =>
                 {
                     var loadedManufacturers = XmlSerializerService.LoadFromXml<Manufacturer>(Constants.manufacturersFile);
-                    if (loadedManufacturers.Count == 0) Console.WriteLine("Файл пуст.");
+                    if (loadedManufacturers.Count == 0) Console.WriteLine("File is empty.");
                     else loadedManufacturers.ForEach(m => m.Print());
                 }
             },
             new MenuItem
             {
                 Key = "7",
-                Description = "Показать все Model через XDocument",
+                Description = "Show all Model using XDocument",
                 Action = () => XmlReaderService.PrintModelsWithXDocument(Constants.phonesFile)
             },
             new MenuItem
             {
                 Key = "8",
-                Description = "Показать все Model через XmlDocument",
+                Description = "Show all Model using XmlDocument",
                 Action = () => XmlReaderService.PrintModelsWithXmlDocument(Constants.phonesFile)
             },
             new MenuItem
             {
                 Key = "9",
-                Description = "Изменить значение элемента через XDocument",
+                Description = "Change element value using XDocument",
                 Action = () =>
                 {
-                    Console.Write("Введите имя элемента (например, Model): ");
+                    Console.Write("Enter element name (for example, Model): ");
                     string elemNameX = Console.ReadLine();
-                    Console.Write("Введите индекс (начиная с 0): ");
+                    Console.Write("Enter index (starting from 0): ");
                     if (!int.TryParse(Console.ReadLine(), out int indexX))
                     {
-                        Console.WriteLine("Некорректный индекс.");
+                        Console.WriteLine("Invalid index.");
                         return;
                     }
-                    Console.Write("Введите новое значение: ");
+                    Console.Write("Enter new value: ");
                     string newValX = Console.ReadLine();
 
                     XmlPatcher.UpdateElementValueXDocument(Constants.phonesFile, elemNameX, indexX, newValX);
@@ -109,18 +109,18 @@ namespace SerializationData
             new MenuItem
             {
                 Key = "10",
-                Description = "Изменить значение элемента через XmlDocument",
+                Description = "Change element value using XmlDocument",
                 Action = () =>
                 {
-                    Console.Write("Введите имя элемента (например, Model): ");
+                    Console.Write("Enter element name (for example, Model): ");
                     string elemNameXml = Console.ReadLine();
-                    Console.Write("Введите индекс (начиная с 0): ");
+                    Console.Write("Enter index (starting from 0): ");
                     if (!int.TryParse(Console.ReadLine(), out int indexXml))
                     {
-                        Console.WriteLine("Некорректный индекс.");
+                        Console.WriteLine("Invalid index.");
                         return;
                     }
-                    Console.Write("Введите новое значение: ");
+                    Console.Write("Enter new value: ");
                     string newValXml = Console.ReadLine();
 
                     XmlPatcher.UpdateElementValueXmlDocument(Constants.phonesFile, elemNameXml, indexXml, newValXml);
@@ -129,7 +129,7 @@ namespace SerializationData
             new MenuItem
             {
                 Key = "0",
-                Description = "Выход",
+                Description = "Exit",
                 Action = () => Environment.Exit(0)
             }
         };

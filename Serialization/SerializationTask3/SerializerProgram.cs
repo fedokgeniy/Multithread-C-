@@ -4,16 +4,16 @@ using SerializationData;
 
 while (true)
 {
-    Console.WriteLine("\nМеню:");
+    Console.WriteLine("\nMenu:");
     foreach (var item in Menu.MenuItems)
         Console.WriteLine($"{item.Key} - {item.Description}");
 
-    Console.Write("Выбор: ");
+    Console.Write("Selection: ");
     var input = Console.ReadLine();
 
     var selected = Menu.MenuItems.FirstOrDefault(m => m.Key == input);
     if (selected != null)
         selected.Action.Invoke();
     else
-        Console.WriteLine("Неверный выбор. Попробуйте снова.");
+        Console.WriteLine("Wrong selection. Try again.");
 }

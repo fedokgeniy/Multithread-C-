@@ -16,7 +16,7 @@ namespace SerializationServices
         {
             if (!File.Exists(path))
             {
-                Console.WriteLine("Файл не найден.");
+                Console.WriteLine("File is not found.");
                 return;
             }
 
@@ -25,7 +25,7 @@ namespace SerializationServices
                             .Select(e => e.Element(model)?.Value)
                             .Where(v => !string.IsNullOrWhiteSpace(v));
 
-            Console.WriteLine("Значения моделей (через XDocument):");
+            Console.WriteLine("Models value (via XDocument):");
             foreach (var model in models)
             {
                 Console.WriteLine(model);
@@ -36,15 +36,15 @@ namespace SerializationServices
         {
             if (!File.Exists(path))
             {
-                Console.WriteLine("Файл не найден.");
+                Console.WriteLine("File is not found.");
                 return;
             }
 
             var doc = new XmlDocument();
             doc.Load(path);
 
-            var modelNodes = doc.GetElementsByTagName("model");
-            Console.WriteLine("Значения моделей (через XmlDocument):");
+            var modelNodes = doc.GetElementsByTagName(model);
+            Console.WriteLine("Models value (via XmlDocument):");
             foreach (XmlNode node in modelNodes)
             {
                 if (node != null && !string.IsNullOrWhiteSpace(node.InnerText))
