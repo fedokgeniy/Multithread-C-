@@ -49,24 +49,33 @@ public static class FileReaderService
         Console.WriteLine($"Time spent: {stopwatch.ElapsedMilliseconds} ms\n");
     }
 
-    public static void ReadWithSemaphore<T>(string path)
+    public static void ReadWithManualSemaphore<T>(string path)
     {
         const int maxConcurrent = 5;
         const int totalThreads = 10;
 
-        var semaphore = new SemaphoreSlim(maxConcurrent, maxConcurrent);
+        var lockObj = new object();
+        int currentActive = 0;
+
         var stopwatch = Stopwatch.StartNew();
         var data = XmlSerializerService.LoadFromXml<T>(path);
 
-        var tasks = new List<Task>();
+        var threads = new List<Thread>();
 
         for (int i = 0; i < totalThreads; i++)
         {
             int threadId = i + 1;
-
-            tasks.Add(Task.Run(async () =>
+            var thread = new Thread(() =>
             {
-                await semaphore.WaitAsync();
+                lock (lockObj)
+                {
+                    while (currentActive >= maxConcurrent)
+                    {
+                        Monitor.Wait(lockObj);
+                    }
+                    currentActive++;
+                }
+
                 try
                 {
                     var sw = Stopwatch.StartNew();
@@ -80,16 +89,28 @@ public static class FileReaderService
                 }
                 finally
                 {
-                    semaphore.Release();
+                    lock (lockObj)
+                    {
+                        currentActive--;
+                        Monitor.PulseAll(lockObj);
+                    }
                 }
-            }));
+            });
+
+            threads.Add(thread);
+            thread.Start();
         }
 
-        Task.WaitAll(tasks.ToArray());
+        foreach (var thread in threads)
+        {
+            thread.Join();
+        }
+
         stopwatch.Stop();
 
-        Console.WriteLine("=== [Ten-threaded reading with semaphore] ===");
+        Console.WriteLine("=== [Ten-threaded reading with manual semaphore] ===");
         Console.WriteLine($"Time spent: {stopwatch.ElapsedMilliseconds} ms\n");
     }
+
 }
 

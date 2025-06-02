@@ -62,7 +62,7 @@ namespace MultithreadingData
                 Description = "Ten threads read the file with a limit of 5 simultaneous threads (semaphore)",
                 Action = () =>
                 {
-                    FileReaderService.ReadWithManualSemaphore<Phone>(Constants.phonesMergedFile);
+                    FileReaderService.ReadWithSemaphore<Phone>(Constants.phonesMergedFile);
                 }
             },
             new MenuItem
