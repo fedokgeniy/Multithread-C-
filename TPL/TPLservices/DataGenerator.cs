@@ -1,6 +1,6 @@
-﻿using MultithreadingModels;
+﻿using TPLmodels;
 
-namespace MultithreadingServices;
+namespace TPLservices;
 
 public static class DataGenerator
 {

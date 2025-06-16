@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TPLdata\TPLdata.csproj" />
     <ProjectReference Include="..\TPLmodels\TPLmodels.csproj" />
     <ProjectReference Include="..\TPLservices\TPLservices.csproj" />
   </ItemGroup>

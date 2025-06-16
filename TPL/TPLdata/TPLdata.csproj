@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TPLmodels\TPLmodels.csproj" />
+    <ProjectReference Include="..\TPLservices\TPLservices.csproj" />
+  </ItemGroup>
+
 </Project>
