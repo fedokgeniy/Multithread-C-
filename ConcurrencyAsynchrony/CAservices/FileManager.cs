@@ -35,13 +35,10 @@ namespace ConcurrencyAsynchrony
         {
             _displayManager.ShowSectionSeparator("Parallel File Reading with Progress");
 
-            // Start all file reading tasks
             var tasks = AppConstants.FileNames.Select(ReadFileWithProgressAsync).ToArray();
 
-            // Wait for all tasks to complete
             await Task.WhenAll(tasks);
 
-            // Display final results
             _displayManager.ShowStageCompletion("File Reading");
             _displayManager.DisplayFileContents(_fileData);
         }
@@ -55,7 +52,6 @@ namespace ConcurrencyAsynchrony
         {
             try
             {
-                // Check if file exists
                 if (!File.Exists(fileName))
                 {
                     _displayManager.WriteLineThreadSafe($"Warning: File {fileName} not found. Skipping...");
@@ -68,7 +64,6 @@ namespace ConcurrencyAsynchrony
                 var totalLines = lines.Length;
                 var bag = new ConcurrentBag<string>();
 
-                // Process each line with progress update
                 for (int i = 0; i < totalLines; i++)
                 {
                     var line = lines[i];
@@ -77,14 +72,11 @@ namespace ConcurrencyAsynchrony
                         bag.Add(line.Trim());
                     }
 
-                    // Update progress bar
                     _displayManager.ShowProgressBar(fileName, i + 1, totalLines, 10);
 
-                    // Add delay as per requirement (100ms per line)
                     await Task.Delay(AppConstants.ProgressDelayMs);
                 }
 
-                // Store the data
                 _fileData[fileName] = bag;
                 _displayManager.WriteLineThreadSafe($"Completed reading {fileName} - {bag.Count} objects loaded");
             }
@@ -170,7 +162,6 @@ namespace ConcurrencyAsynchrony
             {
                 using var writer = new StreamWriter(fileName);
 
-                // Write 10 sample lines
                 for (int i = 1; i <= AppConstants.ObjectsPerFile; i++)
                 {
                     await writer.WriteLineAsync($"Sample object {i} in {fileName}");
