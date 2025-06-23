@@ -45,7 +45,6 @@ namespace PhoneInheritanceDemo.Tests.Services
         [Test]
         public void StrategyName_Should_ReturnCorrectValue()
         {
-            // Act & Assert
             _service.StrategyName.Should().Be("Table-Per-Concrete-Type (TPC)");
         }
 

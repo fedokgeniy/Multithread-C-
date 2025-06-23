@@ -122,11 +122,9 @@ namespace PhoneInheritanceDemo.Services
         /// </summary>
         public virtual async Task SeedDataAsync()
         {
-            // Check if data already exists
             if (await _context.Manufacturers.AnyAsync())
                 return;
 
-            // Add manufacturers
             var manufacturers = new[]
             {
                 new Manufacturer { Name = "Apple", Country = "USA", FoundedYear = 1976 },
@@ -138,7 +136,6 @@ namespace PhoneInheritanceDemo.Services
             _context.Manufacturers.AddRange(manufacturers);
             await _context.SaveChangesAsync();
 
-            // Add phones
             var phones = new Phone[]
             {
                 new Smartphone

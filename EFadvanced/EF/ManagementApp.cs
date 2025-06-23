@@ -9,7 +9,7 @@ namespace PhoneInheritanceDemo
     /// Entry point for the Phone Inheritance Demo console application.
     /// Demonstrates Entity Framework Core inheritance strategies (TPH, TPT, TPC) with SQLite database.
     /// </summary>
-    internal class Program
+    internal class ManagementApp
     {
         /// <summary>
         /// Main entry point for the application.
@@ -24,10 +24,8 @@ namespace PhoneInheritanceDemo
                 Console.WriteLine("Demonstrating TPH, TPT, and TPC inheritance strategies with SQLite");
                 Console.WriteLine();
 
-                // Initialize databases for all strategies
                 await InitializeDatabasesAsync();
 
-                // Start the interactive menu
                 var menuManager = new MenuManager();
                 await menuManager.RunAsync();
             }
@@ -49,17 +47,14 @@ namespace PhoneInheritanceDemo
 
             try
             {
-                // Initialize TPH database
                 var tphService = StrategyFactory.CreateTphService();
                 await tphService.EnsureDatabaseCreatedAsync();
                 Console.WriteLine("✓ TPH database initialized");
 
-                // Initialize TPT database
                 var tptService = StrategyFactory.CreateTptService();
                 await tptService.EnsureDatabaseCreatedAsync();
                 Console.WriteLine("✓ TPT database initialized");
 
-                // Initialize TPC database
                 var tpcService = StrategyFactory.CreateTpcService();
                 await tpcService.EnsureDatabaseCreatedAsync();
                 Console.WriteLine("✓ TPC database initialized");

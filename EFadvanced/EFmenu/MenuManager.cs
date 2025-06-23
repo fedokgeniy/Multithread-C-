@@ -121,7 +121,6 @@ namespace PhoneInheritanceDemo.Menu
                 _currentService?.Dispose();
                 _currentService = _strategyCreators[strategyKey]();
 
-                // Ensure database is created
                 await _currentService.EnsureDatabaseCreatedAsync();
 
                 Console.WriteLine($"\nSelected strategy: {_currentService.StrategyName}");

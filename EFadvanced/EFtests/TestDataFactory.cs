@@ -239,16 +239,16 @@ namespace PhoneInheritanceDemo.Tests.Utilities
             return new Smartphone
             {
                 PhoneId = -1,
-                Model = "", // Invalid empty model
-                SerialNumber = null!, // Invalid null serial number
-                BatteryCapacity = -100, // Invalid negative battery
-                ScreenSize = -1.0m, // Invalid negative screen size
-                Price = -999.99m, // Invalid negative price
-                ManufacturerId = 0, // Invalid manufacturer ID
-                OperatingSystem = "", // Invalid empty OS
-                RamSize = -1, // Invalid negative RAM
-                StorageSize = -1, // Invalid negative storage
-                CameraResolution = -1, // Invalid negative camera
+                Model = "",
+                SerialNumber = null!,
+                BatteryCapacity = -100,
+                ScreenSize = -1.0m,
+                Price = -999.99m,
+                ManufacturerId = 0,
+                OperatingSystem = "", 
+                RamSize = -1, 
+                StorageSize = -1, 
+                CameraResolution = -1, 
                 HasFiveG = false
             };
         }

@@ -76,7 +76,6 @@ namespace PhoneInheritanceDemo.Data
                 entity.Property(p => p.Price).HasPrecision(18, 2);
                 entity.HasIndex(p => p.SerialNumber).IsUnique();
 
-                // Configure relationship with Manufacturer
                 entity.HasOne(p => p.Manufacturer)
                       .WithMany(m => m.Phones)
                       .HasForeignKey(p => p.ManufacturerId)
