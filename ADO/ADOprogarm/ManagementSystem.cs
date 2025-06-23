@@ -10,7 +10,7 @@ namespace ManufacturerPhoneApp
     /// <summary>
     /// Main program class containing the application entry point.
     /// </summary>
-    public class Program
+    public class ManagementSystem
     {
         /// <summary>
         /// The main entry point for the application.
@@ -24,7 +24,6 @@ namespace ManufacturerPhoneApp
 
             try
             {
-                // Initialize application
                 await InitializeApplicationAsync();
             }
             catch (Exception ex)
@@ -41,14 +40,11 @@ namespace ManufacturerPhoneApp
         /// <returns>A task representing the asynchronous operation.</returns>
         private static async Task InitializeApplicationAsync()
         {
-            // Database configuration
             const string databaseName = "ManufacturerPhoneDB";
             const string connectionString = $"Server=localhost;Database={databaseName};Trusted_Connection=true;TrustServerCertificate=true;";
 
-            // Initialize database connection manager
             var connectionManager = new DatabaseConnectionManager(connectionString, databaseName);
 
-            // Test database connection
             Console.WriteLine("Testing database connection...");
             var connectionSuccess = await connectionManager.TestConnectionAsync();
             if (!connectionSuccess)

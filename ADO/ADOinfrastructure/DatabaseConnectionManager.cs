@@ -1,8 +1,9 @@
 using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 
-namespace ManufacturerPhoneApp.Repositories
+namespace ManufacturerPhoneApp.Infrastructure
 {
     /// <summary>
     /// Manages database connections and initialization.

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Threading.Tasks;
-using ManufacturerPhoneApp.Extensions;
-using ManufacturerPhoneApp.Infrastructure;
 using ManufacturerPhoneApp.Interfaces;
 using ManufacturerPhoneApp.Models;
+using ManufacturerPhoneApp.Infrastructure;
+using ManufacturerPhoneApp.Extensions;
 
 namespace ManufacturerPhoneApp.Repositories
 {

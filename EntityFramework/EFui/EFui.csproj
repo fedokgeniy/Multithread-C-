@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ADOinterfaces\ADOinterfaces.csproj" />
-    <ProjectReference Include="..\ADOmodels\ADOmodels.csproj" />
-    <ProjectReference Include="..\ADOrepositories\ADOrepositories.csproj" />
+    <ProjectReference Include="..\EFmodels\EFmodels.csproj" />
+    <ProjectReference Include="..\EFrepositories\EFrepositories.csproj" />
+    <ProjectReference Include="..\EFservices\EFservices.csproj" />
   </ItemGroup>
 
 </Project>

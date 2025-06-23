@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ADOinterfaces\ADOinterfaces.csproj" />
-    <ProjectReference Include="..\ADOmodels\ADOmodels.csproj" />
-    <ProjectReference Include="..\ADOrepositories\ADOrepositories.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EFmodels\EFmodels.csproj" />
   </ItemGroup>
 
 </Project>
