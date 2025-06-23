@@ -12,7 +12,7 @@ namespace ManufacturerPhoneApp
     /// <summary>
     /// Main program entry point.
     /// </summary>
-    internal class Program
+    internal class ManagementSystem
     {
         /// <summary>
         /// Application entry point.
@@ -24,13 +24,10 @@ namespace ManufacturerPhoneApp
 
             try
             {
-                // Create host with dependency injection
                 var host = CreateHostBuilder(args).Build();
 
-                // Initialize database with sample data
                 await InitializeDatabaseAsync(host.Services);
 
-                // Start the console application
                 var consoleMenu = host.Services.GetRequiredService<ConsoleMenu>();
                 await consoleMenu.ShowMainMenuAsync();
             }
@@ -57,20 +54,16 @@ namespace ManufacturerPhoneApp
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    // Configure Entity Framework
                     services.AddDbContext<ManufacturerPhoneContext>(options =>
                         options.UseSqlite("Data Source=ManufacturerPhone.db")
                                .EnableSensitiveDataLogging(false)
                                .EnableDetailedErrors(false));
 
-                    // Register repositories
                     services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
                     services.AddScoped<IPhoneRepository, PhoneRepository>();
 
-                    // Register services
                     services.AddScoped<IBusinessService, BusinessService>();
 
-                    // Register UI
                     services.AddScoped<ConsoleMenu>();
                 });
 
@@ -87,15 +80,12 @@ namespace ManufacturerPhoneApp
             {
                 Console.WriteLine("Ensuring database is created...");
 
-                // Ensure database is created
                 await context.Database.EnsureCreatedAsync();
 
                 Console.WriteLine("Initializing sample data...");
 
-                // Initialize with sample data
                 DataInitializer.Initialize(context);
 
-                // Get counts for verification
                 var manufacturerCount = await context.Manufacturers.CountAsync();
                 var phoneCount = await context.Phones.CountAsync();
 

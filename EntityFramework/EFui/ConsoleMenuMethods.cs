@@ -299,7 +299,6 @@ namespace ManufacturerPhoneApp.UI
         {
             Console.WriteLine("\n=== Add New Phone ===");
 
-            // First, show available manufacturers
             var manufacturers = await _manufacturerRepository.GetAllAsync();
             if (!manufacturers.Any())
             {
@@ -341,7 +340,6 @@ namespace ManufacturerPhoneApp.UI
                 return;
             }
 
-            // Check if serial number already exists
             var existingPhone = await _phoneRepository.GetBySerialNumberAsync(serialNumber);
             if (existingPhone != null)
             {
@@ -394,7 +392,6 @@ namespace ManufacturerPhoneApp.UI
                 var serialNumber = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(serialNumber))
                 {
-                    // Check if new serial number already exists
                     var existingPhone = await _phoneRepository.GetBySerialNumberAsync(serialNumber);
                     if (existingPhone != null && existingPhone.Id != phone.Id)
                     {
@@ -536,7 +533,6 @@ namespace ManufacturerPhoneApp.UI
         {
             Console.WriteLine("\n=== Add Product for New Manufacturer (with Transaction) ===");
 
-            // Get manufacturer details
             Console.WriteLine("Enter Manufacturer Details:");
             Console.Write("Name: ");
             var manufacturerName = Console.ReadLine();
@@ -548,7 +544,6 @@ namespace ManufacturerPhoneApp.UI
             var isChildInput = Console.ReadLine();
             bool isChildCompany = isChildInput?.ToLower() == "y" || isChildInput?.ToLower() == "yes";
 
-            // Get phone details
             Console.WriteLine("\nEnter Phone Details:");
             Console.Write("Model: ");
             var phoneModel = Console.ReadLine();
@@ -559,7 +554,6 @@ namespace ManufacturerPhoneApp.UI
             Console.Write("Phone Type: ");
             var phoneType = Console.ReadLine();
 
-            // Validate input
             if (string.IsNullOrWhiteSpace(manufacturerName) || string.IsNullOrWhiteSpace(manufacturerAddress) ||
                 string.IsNullOrWhiteSpace(phoneModel) || string.IsNullOrWhiteSpace(phoneSerialNumber) || 
                 string.IsNullOrWhiteSpace(phoneType))
@@ -568,7 +562,6 @@ namespace ManufacturerPhoneApp.UI
                 return;
             }
 
-            // Check if serial number already exists
             var existingPhone = await _phoneRepository.GetBySerialNumberAsync(phoneSerialNumber);
             if (existingPhone != null)
             {

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite;
 using ManufacturerPhoneApp.Models;
 
 namespace ManufacturerPhoneApp.Data
@@ -35,7 +36,6 @@ namespace ManufacturerPhoneApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure Manufacturer entity
             modelBuilder.Entity<Manufacturer>(entity =>
             {
                 entity.ToTable("Manufacturers");
@@ -60,12 +60,10 @@ namespace ManufacturerPhoneApp.Data
                     .HasColumnName("IsAChildCompany")
                     .HasDefaultValue(false);
 
-                // Configure index on Name for better performance
                 entity.HasIndex(m => m.Name)
                     .HasDatabaseName("IX_Manufacturers_Name");
             });
 
-            // Configure Phone entity
             modelBuilder.Entity<Phone>(entity =>
             {
                 entity.ToTable("Phones");
@@ -95,19 +93,16 @@ namespace ManufacturerPhoneApp.Data
                     .HasColumnName("ManufacturerId")
                     .IsRequired();
 
-                // Configure relationship
                 entity.HasOne(p => p.Manufacturer)
                     .WithMany(m => m.Phones)
                     .HasForeignKey(p => p.ManufacturerId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Phones_Manufacturers");
 
-                // Configure unique constraint on SerialNumber
                 entity.HasIndex(p => p.SerialNumber)
                     .IsUnique()
                     .HasDatabaseName("IX_Phones_SerialNumber_Unique");
 
-                // Configure index on ManufacturerId for better performance
                 entity.HasIndex(p => p.ManufacturerId)
                     .HasDatabaseName("IX_Phones_ManufacturerId");
             });

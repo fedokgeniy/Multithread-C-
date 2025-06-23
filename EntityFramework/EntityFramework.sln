@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFservices", "EFservices\EF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFui", "EFui\EFui.csproj", "{DAB6C325-2285-4CB7-990C-6F2871B79A6E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFtests", "EFtests\EFtests.csproj", "{C85F5C72-A279-427E-A610-2C3968171B51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{DAB6C325-2285-4CB7-990C-6F2871B79A6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAB6C325-2285-4CB7-990C-6F2871B79A6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAB6C325-2285-4CB7-990C-6F2871B79A6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C85F5C72-A279-427E-A610-2C3968171B51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C85F5C72-A279-427E-A610-2C3968171B51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C85F5C72-A279-427E-A610-2C3968171B51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C85F5C72-A279-427E-A610-2C3968171B51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

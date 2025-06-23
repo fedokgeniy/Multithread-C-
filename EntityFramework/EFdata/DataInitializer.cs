@@ -14,21 +14,17 @@ namespace ManufacturerPhoneApp.Data
         /// <param name="context">The database context.</param>
         public static void Initialize(ManufacturerPhoneContext context)
         {
-            // Ensure database is created
             context.Database.EnsureCreated();
 
-            // Check if data already exists
             if (context.Manufacturers.Any())
             {
-                return; // Database has been seeded
+                return;
             }
 
-            // Create manufacturers
             var manufacturers = CreateManufacturers();
             context.Manufacturers.AddRange(manufacturers);
             context.SaveChanges();
 
-            // Create phones
             var phones = CreatePhones(manufacturers);
             context.Phones.AddRange(phones);
             context.SaveChanges();
@@ -78,7 +74,7 @@ namespace ManufacturerPhoneApp.Data
                 {
                     Name = companyNames[i],
                     Address = addresses[i],
-                    IsAChildCompany = i % 4 == 0 // Every 4th company is a child company
+                    IsAChildCompany = i % 4 == 0 
                 });
             }
 
@@ -109,11 +105,10 @@ namespace ManufacturerPhoneApp.Data
                 "Foldable", "Compact", "Budget", "Mid-range"
             };
 
-            var random = new Random(42); // Fixed seed for reproducible results
+            var random = new Random(42); 
 
             for (int i = 0; i < 30; i++)
             {
-                // Assign phones to manufacturers (each manufacturer gets at least one phone)
                 var manufacturerIndex = i % manufacturers.Count;
 
                 phones.Add(new Phone
@@ -125,7 +120,6 @@ namespace ManufacturerPhoneApp.Data
                 });
             }
 
-            // Add additional phones to create more variety
             for (int i = 30; i < 60; i++)
             {
                 var manufacturerIndex = random.Next(manufacturers.Count);
