@@ -1,223 +1,211 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PhoneInheritanceDemo.Data;
 using PhoneInheritanceDemo.Models;
 
-namespace PhoneInheritanceDemo.Services;
-
-/// <summary>
-/// Base implementation of phone service with common functionality.
-/// </summary>
-/// <typeparam name="TContext">The DbContext type.</typeparam>
-public abstract class BasePhoneService<TContext> : IPhoneService where TContext : BasePhoneContext
+namespace PhoneInheritanceDemo.Services
 {
-    protected readonly TContext _context;
-
     /// <summary>
-    /// Initializes a new instance of the BasePhoneService class.
+    /// Base implementation of phone service providing common functionality
+    /// for all inheritance strategy implementations.
     /// </summary>
-    /// <param name="context">The database context.</param>
-    protected BasePhoneService(TContext context)
+    /// <typeparam name="TContext">The type of database context</typeparam>
+    public abstract class BasePhoneService<TContext> : IPhoneService
+        where TContext : BasePhoneContext
     {
-        _context = context;
-    }
+        protected readonly TContext _context;
 
-    /// <summary>
-    /// Adds a new manufacturer to the database.
-    /// </summary>
-    /// <param name="manufacturer">The manufacturer to add.</param>
-    /// <returns>The added manufacturer with generated ID.</returns>
-    public virtual async Task<Manufacturer> AddManufacturerAsync(Manufacturer manufacturer)
-    {
-        _context.Manufacturers.Add(manufacturer);
-        await _context.SaveChangesAsync();
-        return manufacturer;
-    }
-
-    /// <summary>
-    /// Adds a new phone to the database.
-    /// </summary>
-    /// <param name="phone">The phone to add.</param>
-    /// <returns>The added phone with generated ID.</returns>
-    public virtual async Task<Phone> AddPhoneAsync(Phone phone)
-    {
-        _context.Phones.Add(phone);
-        await _context.SaveChangesAsync();
-        return phone;
-    }
-
-    /// <summary>
-    /// Gets all manufacturers from the database.
-    /// </summary>
-    /// <returns>List of all manufacturers.</returns>
-    public virtual async Task<List<Manufacturer>> GetAllManufacturersAsync()
-    {
-        return await _context.Manufacturers.ToListAsync();
-    }
-
-    /// <summary>
-    /// Gets all phones from the database.
-    /// </summary>
-    /// <returns>List of all phones.</returns>
-    public virtual async Task<List<Phone>> GetAllPhonesAsync()
-    {
-        return await _context.Phones.Include(p => p.Manufacturer).ToListAsync();
-    }
-
-    /// <summary>
-    /// Gets phones by type.
-    /// </summary>
-    /// <typeparam name="T">The phone type.</typeparam>
-    /// <returns>List of phones of the specified type.</returns>
-    public virtual async Task<List<T>> GetPhonesByTypeAsync<T>() where T : Phone
-    {
-        return await _context.Set<T>().Include(p => p.Manufacturer).ToListAsync();
-    }
-
-    /// <summary>
-    /// Gets a phone by its ID.
-    /// </summary>
-    /// <param name="id">The phone ID.</param>
-    /// <returns>The phone if found, null otherwise.</returns>
-    public virtual async Task<Phone?> GetPhoneByIdAsync(int id)
-    {
-        return await _context.Phones.Include(p => p.Manufacturer)
-                                   .FirstOrDefaultAsync(p => p.Id == id);
-    }
-
-    /// <summary>
-    /// Updates an existing phone.
-    /// </summary>
-    /// <param name="phone">The phone to update.</param>
-    /// <returns>The updated phone.</returns>
-    public virtual async Task<Phone> UpdatePhoneAsync(Phone phone)
-    {
-        _context.Phones.Update(phone);
-        await _context.SaveChangesAsync();
-        return phone;
-    }
-
-    /// <summary>
-    /// Deletes a phone by its ID.
-    /// </summary>
-    /// <param name="id">The phone ID to delete.</param>
-    /// <returns>True if deleted successfully, false otherwise.</returns>
-    public virtual async Task<bool> DeletePhoneAsync(int id)
-    {
-        var phone = await _context.Phones.FindAsync(id);
-        if (phone == null)
-            return false;
-
-        _context.Phones.Remove(phone);
-        await _context.SaveChangesAsync();
-        return true;
-    }
-
-    /// <summary>
-    /// Seeds the database with sample data.
-    /// </summary>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    public virtual async Task SeedDataAsync()
-    {
-        // Check if data already exists
-        if (await _context.Manufacturers.AnyAsync())
-            return;
-
-        // Add manufacturers
-        var manufacturers = new List<Manufacturer>
+        /// <summary>
+        /// Initializes a new instance of the BasePhoneService class.
+        /// </summary>
+        /// <param name="context">The database context to use</param>
+        protected BasePhoneService(TContext context)
         {
-            new Manufacturer
-            {
-                Name = "Apple Inc.",
-                Address = "One Apple Park Way, Cupertino, CA 95014, USA",
-                IsAChildCompany = false
-            },
-            new Manufacturer
-            {
-                Name = "Samsung Electronics",
-                Address = "Samsung Digital City, Yeongtong-gu, Suwon-si, South Korea",
-                IsAChildCompany = false
-            },
-            new Manufacturer
-            {
-                Name = "Nokia Corporation",
-                Address = "Karaportti 3, 02610 Espoo, Finland",
-                IsAChildCompany = false
-            },
-            new Manufacturer
-            {
-                Name = "ASUS ROG",
-                Address = "15 Biopolis Way, Singapore 138669",
-                IsAChildCompany = true
-            }
-        };
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
 
-        _context.Manufacturers.AddRange(manufacturers);
-        await _context.SaveChangesAsync();
-
-        // Add phones
-        var phones = new List<Phone>
+        /// <summary>
+        /// Ensures that the database for the context exists.
+        /// If it exists, no action is taken. If it does not exist, 
+        /// the database and all its schema are created.
+        /// </summary>
+        public virtual async Task EnsureDatabaseCreatedAsync()
         {
-            new FeaturePhone
-            {
-                Model = "Nokia 3310",
-                SerialNumber = "NK3310001",
-                ManufacturerId = manufacturers[2].Id,
-                BatteryCapacity = 1200,
-                ScreenSize = 2.4m,
-                HasPhysicalKeypad = true,
-                SmsStorageCapacity = 500,
-                SupportsBasicGames = true
-            },
-            new Smartphone
-            {
-                Model = "iPhone 15 Pro",
-                SerialNumber = "IP15P001",
-                ManufacturerId = manufacturers[0].Id,
-                BatteryCapacity = 3274,
-                ScreenSize = 6.1m,
-                OperatingSystem = "iOS",
-                RamCapacity = 8,
-                StorageCapacity = 256,
-                CameraResolution = 48.0m,
-                Supports5G = true
-            },
-            new Smartphone
-            {
-                Model = "Galaxy S24 Ultra",
-                SerialNumber = "GS24U001",
-                ManufacturerId = manufacturers[1].Id,
-                BatteryCapacity = 5000,
-                ScreenSize = 6.8m,
-                OperatingSystem = "Android",
-                RamCapacity = 12,
-                StorageCapacity = 512,
-                CameraResolution = 200.0m,
-                Supports5G = true
-            },
-            new GamingPhone
-            {
-                Model = "ROG Phone 8 Pro",
-                SerialNumber = "ROG8P001",
-                ManufacturerId = manufacturers[3].Id,
-                BatteryCapacity = 6000,
-                ScreenSize = 6.78m,
-                OperatingSystem = "Android",
-                RamCapacity = 24,
-                StorageCapacity = 1024,
-                GpuModel = "Adreno 750",
-                RefreshRate = 165,
-                HasGamingTriggers = true,
-                CoolingSystem = "GameCool 8 Cooling System"
-            }
-        };
+            await _context.Database.EnsureCreatedAsync();
+        }
 
-        _context.Phones.AddRange(phones);
-        await _context.SaveChangesAsync();
+        /// <summary>
+        /// Gets the name of the inheritance strategy being used.
+        /// </summary>
+        public abstract string StrategyName { get; }
+
+        /// <summary>
+        /// Gets all manufacturers from the database.
+        /// </summary>
+        /// <returns>A collection of all manufacturers</returns>
+        public virtual async Task<IEnumerable<Manufacturer>> GetManufacturersAsync()
+        {
+            return await _context.Manufacturers.ToListAsync();
+        }
+
+        /// <summary>
+        /// Gets all phones from the database.
+        /// </summary>
+        /// <returns>A collection of all phones</returns>
+        public virtual async Task<IEnumerable<Phone>> GetPhonesAsync()
+        {
+            return await _context.Phones
+                .Include(p => p.Manufacturer)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Gets phones of a specific type.
+        /// </summary>
+        /// <typeparam name="T">The type of phone to retrieve</typeparam>
+        /// <returns>A collection of phones of the specified type</returns>
+        public virtual async Task<IEnumerable<T>> GetPhonesByTypeAsync<T>() where T : Phone
+        {
+            return await _context.Phones
+                .OfType<T>()
+                .Include(p => p.Manufacturer)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Gets a phone by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the phone</param>
+        /// <returns>The phone with the specified ID, or null if not found</returns>
+        public virtual async Task<Phone?> GetPhoneByIdAsync(int id)
+        {
+            return await _context.Phones
+                .Include(p => p.Manufacturer)
+                .FirstOrDefaultAsync(p => p.PhoneId == id);
+        }
+
+        /// <summary>
+        /// Adds a new manufacturer to the database.
+        /// </summary>
+        /// <param name="manufacturer">The manufacturer to add</param>
+        /// <returns>The added manufacturer with generated ID</returns>
+        public virtual async Task<Manufacturer> AddManufacturerAsync(Manufacturer manufacturer)
+        {
+            if (manufacturer == null)
+                throw new ArgumentNullException(nameof(manufacturer));
+
+            _context.Manufacturers.Add(manufacturer);
+            await _context.SaveChangesAsync();
+            return manufacturer;
+        }
+
+        /// <summary>
+        /// Adds a new phone to the database.
+        /// </summary>
+        /// <param name="phone">The phone to add</param>
+        /// <returns>The added phone with generated ID</returns>
+        public virtual async Task<Phone> AddPhoneAsync(Phone phone)
+        {
+            if (phone == null)
+                throw new ArgumentNullException(nameof(phone));
+
+            _context.Phones.Add(phone);
+            await _context.SaveChangesAsync();
+            return phone;
+        }
+
+        /// <summary>
+        /// Seeds the database with sample data if it's empty.
+        /// </summary>
+        public virtual async Task SeedDataAsync()
+        {
+            // Check if data already exists
+            if (await _context.Manufacturers.AnyAsync())
+                return;
+
+            // Add manufacturers
+            var manufacturers = new[]
+            {
+                new Manufacturer { Name = "Apple", Country = "USA", FoundedYear = 1976 },
+                new Manufacturer { Name = "Samsung", Country = "South Korea", FoundedYear = 1938 },
+                new Manufacturer { Name = "Nokia", Country = "Finland", FoundedYear = 1865 },
+                new Manufacturer { Name = "ASUS ROG", Country = "Taiwan", FoundedYear = 1989 }
+            };
+
+            _context.Manufacturers.AddRange(manufacturers);
+            await _context.SaveChangesAsync();
+
+            // Add phones
+            var phones = new Phone[]
+            {
+                new Smartphone
+                {
+                    Model = "iPhone 15 Pro",
+                    SerialNumber = "APL-15PRO-001",
+                    BatteryCapacity = 3274,
+                    ScreenSize = 6.1m,
+                    Price = 1199.99m,
+                    ManufacturerId = manufacturers[0].ManufacturerId,
+                    OperatingSystem = "iOS 17",
+                    RamSize = 8,
+                    StorageSize = 256,
+                    CameraResolution = 48,
+                    HasFiveG = true
+                },
+                new Smartphone
+                {
+                    Model = "Galaxy S24 Ultra",
+                    SerialNumber = "SAM-S24U-001",
+                    BatteryCapacity = 5000,
+                    ScreenSize = 6.8m,
+                    Price = 1299.99m,
+                    ManufacturerId = manufacturers[1].ManufacturerId,
+                    OperatingSystem = "Android 14",
+                    RamSize = 12,
+                    StorageSize = 512,
+                    CameraResolution = 200,
+                    HasFiveG = true
+                },
+                new FeaturePhone
+                {
+                    Model = "Nokia 3310",
+                    SerialNumber = "NOK-3310-001",
+                    BatteryCapacity = 1200,
+                    ScreenSize = 2.4m,
+                    Price = 59.99m,
+                    ManufacturerId = manufacturers[2].ManufacturerId,
+                    HasPhysicalKeyboard = true,
+                    SmsStorageCapacity = 300,
+                    HasBasicGames = true
+                },
+                new GamingPhone
+                {
+                    Model = "ROG Phone 8",
+                    SerialNumber = "ASUS-ROG8-001",
+                    BatteryCapacity = 6000,
+                    ScreenSize = 6.78m,
+                    Price = 1099.99m,
+                    ManufacturerId = manufacturers[3].ManufacturerId,
+                    GpuName = "Adreno 750",
+                    RefreshRate = 165,
+                    HasGamingTriggers = true,
+                    CoolingSystem = "Vapor Chamber"
+                }
+            };
+
+            _context.Phones.AddRange(phones);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Disposes the database context.
+        /// </summary>
+        public void Dispose()
+        {
+            _context?.Dispose();
+        }
     }
-
-    /// <summary>
-    /// Gets the strategy name.
-    /// </summary>
-    /// <returns>The inheritance strategy name.</returns>
-    public abstract string GetStrategyName();
 }

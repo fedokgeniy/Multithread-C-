@@ -1,64 +1,51 @@
 using Microsoft.EntityFrameworkCore;
 using PhoneInheritanceDemo.Models;
 
-namespace PhoneInheritanceDemo.Data;
-
-/// <summary>
-/// Database context using Table-Per-Type (TPT) inheritance strategy.
-/// Each type in the inheritance hierarchy is mapped to a separate table.
-/// </summary>
-public class TptPhoneContext : BasePhoneContext
+namespace PhoneInheritanceDemo.Data
 {
     /// <summary>
-    /// Initializes a new instance of the TptPhoneContext class.
+    /// Database context implementing Table-Per-Type (TPT) inheritance strategy.
+    /// Each type in the hierarchy has its own table with foreign key relationships.
     /// </summary>
-    /// <param name="options">The options for this context.</param>
-    public TptPhoneContext(DbContextOptions<TptPhoneContext> options) : base(options)
+    public class TptPhoneContext : BasePhoneContext
     {
-    }
-
-    /// <summary>
-    /// Configures the model using TPT inheritance strategy.
-    /// </summary>
-    /// <param name="modelBuilder">The builder being used to construct the model.</param>
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        ConfigureCommonEntities(modelBuilder);
-
-        // Configure TPT inheritance strategy
-        modelBuilder.Entity<Phone>().ToTable("Phones");
-        modelBuilder.Entity<FeaturePhone>().ToTable("FeaturePhones");
-        modelBuilder.Entity<Smartphone>().ToTable("Smartphones");
-        modelBuilder.Entity<GamingPhone>().ToTable("GamingPhones");
-
-        // Configure FeaturePhone specific properties
-        modelBuilder.Entity<FeaturePhone>(entity =>
+        /// <summary>
+        /// Initializes a new instance of the TptPhoneContext class.
+        /// </summary>
+        public TptPhoneContext()
         {
-            entity.Property(e => e.HasPhysicalKeypad);
-            entity.Property(e => e.SmsStorageCapacity);
-            entity.Property(e => e.SupportsBasicGames);
-        });
+        }
 
-        // Configure Smartphone specific properties
-        modelBuilder.Entity<Smartphone>(entity =>
+        /// <summary>
+        /// Initializes a new instance of the TptPhoneContext class with options.
+        /// </summary>
+        /// <param name="options">The options for this context</param>
+        public TptPhoneContext(DbContextOptions<TptPhoneContext> options) : base(options)
         {
-            entity.Property(e => e.OperatingSystem).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.RamCapacity);
-            entity.Property(e => e.StorageCapacity);
-            entity.Property(e => e.CameraResolution).HasColumnType("decimal(4,1)");
-            entity.Property(e => e.Supports5G);
-        });
+        }
 
-        // Configure GamingPhone specific properties
-        modelBuilder.Entity<GamingPhone>(entity =>
+        /// <summary>
+        /// Configures the database connection for SQLite.
+        /// </summary>
+        /// <param name="optionsBuilder">The options builder</param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            entity.Property(e => e.OperatingSystem).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.RamCapacity);
-            entity.Property(e => e.StorageCapacity);
-            entity.Property(e => e.GpuModel).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.RefreshRate);
-            entity.Property(e => e.HasGamingTriggers);
-            entity.Property(e => e.CoolingSystem).HasMaxLength(100);
-        });
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite("Data Source=phones_tpt.db");
+            }
+        }
+
+        /// <summary>
+        /// Configures the TPT inheritance strategy with separate tables for each type.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder</param>
+        protected override void ConfigureInheritanceStrategy(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Phone>().ToTable("Phones");
+            modelBuilder.Entity<Smartphone>().ToTable("Smartphones");
+            modelBuilder.Entity<FeaturePhone>().ToTable("FeaturePhones");
+            modelBuilder.Entity<GamingPhone>().ToTable("GamingPhones");
+        }
     }
 }

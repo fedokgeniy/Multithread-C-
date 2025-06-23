@@ -1,57 +1,49 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PhoneInheritanceDemo.Models;
-
-/// <summary>
-/// Represents a manufacturer entity for database operations.
-/// </summary>
-public class Manufacturer
+namespace PhoneInheritanceDemo.Models
 {
     /// <summary>
-    /// Gets or sets the unique identifier of the manufacturer.
+    /// Represents a phone manufacturer with company information.
     /// </summary>
-    public int Id { get; set; }
-
-    /// <summary>
-    /// Gets or sets the manufacturer's name.
-    /// </summary>
-    [Required]
-    [MaxLength(100)]
-    public string Name { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets or sets the manufacturer's address.
-    /// </summary>
-    [Required]
-    [MaxLength(200)]
-    public string Address { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets or sets whether the manufacturer is a child company.
-    /// </summary>
-    public bool IsAChildCompany { get; set; }
-
-    /// <summary>
-    /// Gets or sets the collection of phones manufactured by this manufacturer.
-    /// </summary>
-    public virtual ICollection<Phone> Phones { get; set; } = new List<Phone>();
-
-    /// <summary>
-    /// Prints manufacturer information to the console.
-    /// </summary>
-    public void Print()
+    public class Manufacturer
     {
-        Console.WriteLine($"Manufacturer: ID={Id}, Name={Name}, Address={Address}, " +
-                         $"IsAChildCompany={IsAChildCompany}");
-    }
+        /// <summary>
+        /// Gets or sets the unique identifier for the manufacturer.
+        /// </summary>
+        [Key]
+        public int ManufacturerId { get; set; }
 
-    /// <summary>
-    /// Returns a string representation of the manufacturer.
-    /// </summary>
-    /// <returns>A string containing the manufacturer's information.</returns>
-    public override string ToString()
-    {
-        return $"Manufacturer: ID={Id}, Name={Name}, Address={Address}, " +
-               $"IsAChildCompany={IsAChildCompany}";
+        /// <summary>
+        /// Gets or sets the name of the manufacturer.
+        /// </summary>
+        [Required]
+        [StringLength(100)]
+        public string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the country where the manufacturer is based.
+        /// </summary>
+        [StringLength(100)]
+        public string Country { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the year the manufacturer was founded.
+        /// </summary>
+        [Range(1800, 2030)]
+        public int FoundedYear { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of phones manufactured by this manufacturer.
+        /// </summary>
+        public virtual ICollection<Phone> Phones { get; set; } = new List<Phone>();
+
+        /// <summary>
+        /// Returns a string representation of the manufacturer.
+        /// </summary>
+        /// <returns>A formatted string containing manufacturer details</returns>
+        public override string ToString()
+        {
+            return $"{Name} ({Country}, Founded: {FoundedYear})";
+        }
     }
 }

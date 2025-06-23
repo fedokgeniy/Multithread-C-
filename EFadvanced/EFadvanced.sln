@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36121.58 d17.14
+VisualStudioVersion = 17.14.36121.58
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF", "EF\EF.csproj", "{4C917764-43F4-4D9A-8725-3411A5D6E42A}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFstrategy", "EFstrategy\EFstrategy.csproj", "{D35030E0-9D1F-4DE6-92E4-83AA4274302C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFmenu", "EFmenu\EFmenu.csproj", "{362EB2F0-B5F5-416C-A608-428D37B0CE07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFtests", "EFtests\EFtests.csproj", "{57EE215F-2E3C-49B7-9C1C-75530367039B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{362EB2F0-B5F5-416C-A608-428D37B0CE07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{362EB2F0-B5F5-416C-A608-428D37B0CE07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{362EB2F0-B5F5-416C-A608-428D37B0CE07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57EE215F-2E3C-49B7-9C1C-75530367039B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57EE215F-2E3C-49B7-9C1C-75530367039B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57EE215F-2E3C-49B7-9C1C-75530367039B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57EE215F-2E3C-49B7-9C1C-75530367039B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

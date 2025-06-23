@@ -2,82 +2,57 @@ using Microsoft.EntityFrameworkCore;
 using PhoneInheritanceDemo.Data;
 using PhoneInheritanceDemo.Services;
 
-namespace PhoneInheritanceDemo.Strategies;
-
-/// <summary>
-/// Factory for creating different inheritance strategy implementations.
-/// </summary>
-public static class StrategyFactory
+namespace PhoneInheritanceDemo.Strategies
 {
     /// <summary>
-    /// Creates a phone service using the TPH (Table-Per-Hierarchy) strategy.
+    /// Factory class for creating phone service instances with different inheritance strategies.
+    /// Provides a centralized way to create and configure services for TPH, TPT, and TPC strategies.
     /// </summary>
-    /// <returns>A phone service using TPH strategy.</returns>
-    public static IPhoneService CreateTphService()
+    public static class StrategyFactory
     {
-        var options = new DbContextOptionsBuilder<TphPhoneContext>()
-            .UseInMemoryDatabase(databaseName: "TphPhoneDatabase")
-            .Options;
-
-        var context = new TphPhoneContext(options);
-        return new TphPhoneService(context);
-    }
-
-    /// <summary>
-    /// Creates a phone service using the TPT (Table-Per-Type) strategy.
-    /// </summary>
-    /// <returns>A phone service using TPT strategy.</returns>
-    public static IPhoneService CreateTptService()
-    {
-        var options = new DbContextOptionsBuilder<TptPhoneContext>()
-            .UseInMemoryDatabase(databaseName: "TptPhoneDatabase")
-            .Options;
-
-        var context = new TptPhoneContext(options);
-        return new TptPhoneService(context);
-    }
-
-    /// <summary>
-    /// Creates a phone service using the TPC (Table-Per-Concrete-Type) strategy.
-    /// </summary>
-    /// <returns>A phone service using TPC strategy.</returns>
-    public static IPhoneService CreateTpcService()
-    {
-        var options = new DbContextOptionsBuilder<TpcPhoneContext>()
-            .UseInMemoryDatabase(databaseName: "TpcPhoneDatabase")
-            .Options;
-
-        var context = new TpcPhoneContext(options);
-        return new TpcPhoneService(context);
-    }
-
-    /// <summary>
-    /// Gets all available strategy names.
-    /// </summary>
-    /// <returns>List of strategy names.</returns>
-    public static List<string> GetAvailableStrategies()
-    {
-        return new List<string>
+        /// <summary>
+        /// Creates a phone service using Table-Per-Hierarchy (TPH) strategy.
+        /// All phone types are stored in a single table with a discriminator column.
+        /// </summary>
+        /// <returns>A configured TPH phone service instance</returns>
+        public static IPhoneService CreateTphService()
         {
-            "TPH (Table-Per-Hierarchy)",
-            "TPT (Table-Per-Type)",
-            "TPC (Table-Per-Concrete-Type)"
-        };
-    }
+            var options = new DbContextOptionsBuilder<TphPhoneContext>()
+                .UseSqlite("Data Source=phones_tph.db")
+                .Options;
 
-    /// <summary>
-    /// Creates a phone service based on strategy choice.
-    /// </summary>
-    /// <param name="strategyChoice">The strategy choice (1=TPH, 2=TPT, 3=TPC).</param>
-    /// <returns>A phone service using the selected strategy.</returns>
-    public static IPhoneService CreateServiceByChoice(int strategyChoice)
-    {
-        return strategyChoice switch
+            var context = new TphPhoneContext(options);
+            return new TphPhoneService(context);
+        }
+
+        /// <summary>
+        /// Creates a phone service using Table-Per-Type (TPT) strategy.
+        /// Each type in the hierarchy has its own table with foreign key relationships.
+        /// </summary>
+        /// <returns>A configured TPT phone service instance</returns>
+        public static IPhoneService CreateTptService()
         {
-            1 => CreateTphService(),
-            2 => CreateTptService(),
-            3 => CreateTpcService(),
-            _ => throw new ArgumentException("Invalid strategy choice. Must be 1, 2, or 3.")
-        };
+            var options = new DbContextOptionsBuilder<TptPhoneContext>()
+                .UseSqlite("Data Source=phones_tpt.db")
+                .Options;
+
+            var context = new TptPhoneContext(options);
+            return new TptPhoneService(context);
+        }
+
+        /// <summary>
+        /// Creates a phone service using Table-Per-Concrete-Type (TPC) strategy.
+        /// Each concrete type has its own complete table with all properties.
+        /// </summary>
+        /// <returns>A configured TPC phone service instance</returns>
+        public static IPhoneService CreateTpcService()
+        {
+            var options = new DbContextOptionsBuilder<TpcPhoneContext>()
+                .UseSqlite("Data Source=phones_tpc.db")
+                .Options;
+
+            var context = new TpcPhoneContext(options);
+            return new TpcPhoneService(context);
+        }
     }
 }

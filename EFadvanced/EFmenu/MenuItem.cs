@@ -1,35 +1,32 @@
-namespace PhoneInheritanceDemo.Menu;
+using System;
 
-/// <summary>
-/// Represents a menu item with text and action.
-/// </summary>
-public class MenuItem
+namespace PhoneInheritanceDemo.Menu
 {
     /// <summary>
-    /// Gets or sets the display text for the menu item.
+    /// Represents a menu item with a title and action.
+    /// Used to build interactive console menus.
     /// </summary>
-    public string Text { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets or sets the action to execute when the menu item is selected.
-    /// </summary>
-    public Func<Task>? Action { get; set; }
-
-    /// <summary>
-    /// Gets or sets whether this menu item should exit the menu.
-    /// </summary>
-    public bool IsExit { get; set; }
-
-    /// <summary>
-    /// Initializes a new instance of the MenuItem class.
-    /// </summary>
-    /// <param name="text">The display text.</param>
-    /// <param name="action">The action to execute.</param>
-    /// <param name="isExit">Whether this item exits the menu.</param>
-    public MenuItem(string text, Func<Task>? action = null, bool isExit = false)
+    public class MenuItem
     {
-        Text = text;
-        Action = action;
-        IsExit = isExit;
+        /// <summary>
+        /// Gets or sets the display text for the menu item.
+        /// </summary>
+        public string Title { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the action to execute when the menu item is selected.
+        /// </summary>
+        public Func<Task> Action { get; set; } = null!;
+
+        /// <summary>
+        /// Initializes a new instance of the MenuItem class.
+        /// </summary>
+        /// <param name="title">The display text for the menu item</param>
+        /// <param name="action">The action to execute when selected</param>
+        public MenuItem(string title, Func<Task> action)
+        {
+            Title = title;
+            Action = action;
+        }
     }
 }

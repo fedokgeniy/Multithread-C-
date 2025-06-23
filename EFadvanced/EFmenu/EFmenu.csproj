@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EFmodels\EFmodels.csproj" />
     <ProjectReference Include="..\EFservices\EFservices.csproj" />
+    <ProjectReference Include="..\EFstrategy\EFstrategy.csproj" />
   </ItemGroup>
 
 </Project>
